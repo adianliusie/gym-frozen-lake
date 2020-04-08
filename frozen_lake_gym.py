@@ -5,6 +5,8 @@ import numpy as np
 from random import random
 from random import randint
 
+#Class to help with exploration, it controls episilon (the probability of taking
+# a random action) which linearly falls as training continues
 class Class_action_helper():
     def __init__(self, num_actions):
         self.e_start = 1
@@ -26,7 +28,7 @@ class Class_action_helper():
             action = best_decision
         return action
 
-
+#Class to store and update the Q values of the enviornment using Q learning
 class Q_table_class():
     def __init__(self, num_states, num_actions):
         self.num_actions = num_actions
@@ -62,7 +64,7 @@ class Q_table_class():
         return action
 
 
-
+#An implementation to allow a human to play the game and see how well they can fair
 def game():
     env = gym.make('FrozenLake8x8-v0')
     observation = env.reset()
@@ -75,6 +77,7 @@ def game():
         if done:
             break
 
+#Training the system by running 20000 episodes and updating Q values
 def train(env, Q):
     action_maker = Class_action_helper(env.action_space.n)
     success = 0
@@ -100,6 +103,7 @@ def train(env, Q):
 
     print(success/20000)
 
+#Evaluation the system over 1000 episodes to assess performance of the agent
 def eval(env, Q):
     success = 0
     total_walk = 0
@@ -125,6 +129,7 @@ def eval(env, Q):
     print(total_walk/success)
     print(success/1000)
 
+#Main function which runs training and evaluation
 def main():
     env = gym.make('FrozenLake8x8-v0')
     Q = Q_table_class(64, env.action_space.n)
